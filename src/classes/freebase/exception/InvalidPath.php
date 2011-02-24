@@ -1,13 +1,14 @@
 <?php
 /**
  * @package freebase
- * @copyright 2010 Tangent Labs
- * @version SVN: $Id$
+ * @subpackage exception
+ * @copyright 2011 Tangent One
  * @author Jonathan Moss <jonathan.moss@tangentone.com.au>
  */
 namespace freebase\exception;
 /**
  * @package freebase
+ * @subpackage exception
  */
 class InvalidPath extends \freebase\Exception
 {

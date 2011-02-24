@@ -1,15 +1,14 @@
 <?php
 /**
- * @package
- * @copyright 2010 Tangent Labs
- * @version SVN: $Id$
+ * @package freebase
+ * @copyright 2011 Tangent One
  * @author Jonathan Moss <jonathan.moss@tangentone.com.au>
  */
 namespace freebase;
 /**
  * Description of Node
  *
- * @package
+ * @package freebase
  */
 class Node implements \IteratorAggregate
 {
@@ -22,7 +21,7 @@ class Node implements \IteratorAggregate
     /**
      * @var array
      */
-    protected $nodes = array();
+    protected $children = array();
 
     /**
      * @var \freebase\Node
@@ -32,7 +31,7 @@ class Node implements \IteratorAggregate
     /**
      * @var array
      */
-    protected $properties = array();
+    protected $attributes = array();
 
     /**
      * @param string $name
@@ -69,15 +68,15 @@ class Node implements \IteratorAggregate
         return $this;
     }
 
-    /////////////////////////////
-    // PROPERTY ACCESS METHODS //
-    /////////////////////////////
+    //////////////////////////////
+    // ATTRIBUTE ACCESS METHODS //
+    //////////////////////////////
 
     /**
      * @param mixed $value
      * @return \freebase\Node
      */
-    public function setProperty($key, $value)
+    public function setAttributeValue($key, $value)
     {
         $this->properties[$key] = $value;
         return $this;
@@ -87,7 +86,7 @@ class Node implements \IteratorAggregate
      * @param string $key
      * @return mixed
      */
-    public function getProperty($key)
+    public function getAttributeValue($key)
     {
         $value = null;
         if (\array_key_exists($key, $this->properties)) {
@@ -101,13 +100,7 @@ class Node implements \IteratorAggregate
      * @return mixed 
      */
     public function  __get($key) {
-        $value = null;
-        if (\substr($key, 0, 1) == '_') {
-            $value = $this->getProperty(\substr($key, 1));
-        } else {
-            $value = $this->getNodeByName($key);
-        }
-        return $value;
+        return $this->getAttributeValue($key);
     }
 
     /**
@@ -117,9 +110,7 @@ class Node implements \IteratorAggregate
      */
     public function  __set($key, $value)
     {
-        if (\substr($key, 0, 1) == '_') {
-            $this->setProperty(\substr($key, 1), $value);
-        }
+        $this->setAttributeValue($key, $value);
     }
 
     /**
@@ -128,7 +119,7 @@ class Node implements \IteratorAggregate
      */
     public function  __isset($key)
     {
-        return isset($this->properties[$key]);
+        return isset($this->attributes[$key]);
     }
 
     /////////////////////////
@@ -139,17 +130,17 @@ class Node implements \IteratorAggregate
      * @param \freebase\Node $node
      * @return \freebase\Node
      */
-    public function addNode(\freebase\Node $node)
+    public function addChild(\freebase\Node $node)
     {
         $node->setParent($this);
-        $this->nodes[$node->getName()] = $node;
+        $this->children[$node->getName()] = $node;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getNodes()
+    public function getChildren()
     {
         return $this->nodes;
     }
@@ -158,7 +149,7 @@ class Node implements \IteratorAggregate
      * @param string $name
      * @return \freebase\Node
      */
-    public function getNodeByName($name)
+    public function getChildByName($name)
     {
         $node = null;
         if (isset($this->nodes[$name])) {
@@ -167,7 +158,7 @@ class Node implements \IteratorAggregate
         return $node;
     }
 
-    public function getNodeByPath($path)
+    public function getChildByPath($path)
     {
         $nodeList = \explode(".", $path);
         $node = $this;
@@ -189,7 +180,7 @@ class Node implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->nodes);
+        return new \ArrayIterator($this->children);
     }
 
 }

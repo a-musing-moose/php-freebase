@@ -1,15 +1,14 @@
 <?php
 /**
- * @package
- * @copyright 2010 Tangent Labs
- * @version SVN: $Id$
+ * @package freebase
+ * @copyright 2011 Tangent One
  * @author Jonathan Moss <jonathan.moss@tangentone.com.au>
  */
 namespace freebase;
 /**
- * Description of Exception
+ * Base class for freebase exceptions
  *
- * @package
+ * @package freebase
  */
 class Exception extends \Exception
 {
