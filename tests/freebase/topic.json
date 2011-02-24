@@ -1,0 +1,110 @@
+{
+  "code": "/api/status/ok",
+  "result": {
+    "alias": [],
+    "id": "/soft/isbn/9780006476153/best",
+    "properties": {
+      "/book/book_edition/book": {
+        "expected_type": {
+          "id": "/book/book",
+          "text": "Book"
+        },
+        "text": "Edition Of",
+        "values": [
+          {
+            "id": "/en/along_came_a_spider",
+            "text": "Along Came a Spider",
+            "url": "http://www.freebase.com/view/en/along_came_a_spider"
+          }
+        ]
+      },
+      "/book/book_edition/dewey_decimal_number": {
+        "expected_type": {
+          "id": "/type/text",
+          "text": "Text"
+        },
+        "text": "Dewey decimal number",
+        "values": [
+          {
+            "text": "813",
+            "value": "813"
+          }
+        ]
+      },
+      "/book/book_edition/isbn": {
+        "expected_type": {
+          "id": "/book/isbn",
+          "text": "ISBN"
+        },
+        "text": "ISBN",
+        "values": [
+          {
+            "id": "/soft/isbn/9780006476153",
+            "text": "9780006476153",
+            "url": "http://www.freebase.com/view/soft/isbn/9780006476153"
+          }
+        ]
+      },
+      "/book/book_edition/number_of_pages": {
+        "expected_type": {
+          "id": "/book/pagination",
+          "text": "Pagination"
+        },
+        "properties": [
+          {
+            "expected_type": {
+              "id": "/type/int",
+              "text": "Integer"
+            },
+            "id": "/book/pagination/numbered_pages",
+            "text": "Numbered pages"
+          }
+        ],
+        "text": "Number of pages",
+        "values": [
+          {
+            "/book/pagination/numbered_pages": {
+              "expected_type": {
+                "id": "/type/int",
+                "text": "Integer"
+              },
+              "text": "Numbered pages",
+              "values": [
+                {
+                  "text": "435",
+                  "value": 435
+                }
+              ]
+            },
+            "id": "/m/04vd7l_",
+            "text": "435"
+          }
+        ]
+      },
+      "/book/book_edition/publication_date": {
+        "expected_type": {
+          "id": "/type/datetime",
+          "text": "Date/Time"
+        },
+        "text": "Publication date",
+        "values": [
+          {
+            "text": "1994",
+            "value": "1994"
+          }
+        ]
+      }
+    },
+    "text": "Along came a spider",
+    "type": [
+      {
+        "id": "/book/book_edition",
+        "text": "Book Edition"
+      }
+    ],
+    "url": "http://www.freebase.com/view/soft/isbn/9780006476153/best",
+    "webpage": []
+  },
+  "status": "200 OK",
+  "transaction_id": "cache;cache02.p01.sjc1:8101;2011-02-23T23:51:28Z;0011"
+}
