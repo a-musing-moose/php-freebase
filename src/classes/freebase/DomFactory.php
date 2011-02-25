@@ -27,8 +27,12 @@ class DomFactory
         if (isset($data['code']) && $data['code'] == Constants::API_RESPONSE_CODE_OK ) {
             $node = self::createNode($data['result'], 'root');
         } else {
-            $messages = \implode(". ", $data['messages']);
-            throw new \freebase\exception\ApiError($messages);
+            if (\is_array($data['messages'][0])) {
+                $message = $data['messages'][0]['message'];
+            } else {
+                $message = \implode(". ", $data['messages']);
+            }
+            throw new \freebase\exception\ApiError($message);
         }
         return $node;
     }

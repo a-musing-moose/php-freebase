@@ -73,12 +73,22 @@ class Node implements \IteratorAggregate
     //////////////////////////////
 
     /**
+     * Returns all attributes as an array keyed by the attribute name
+     * 
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * @param mixed $value
      * @return \freebase\Node
      */
     public function setAttributeValue($key, $value)
     {
-        $this->properties[$key] = $value;
+        $this->attributes[$key] = $value;
         return $this;
     }
 
@@ -89,8 +99,8 @@ class Node implements \IteratorAggregate
     public function getAttributeValue($key)
     {
         $value = null;
-        if (\array_key_exists($key, $this->properties)) {
-            $value = $this->properties[$key];
+        if (\array_key_exists($key, $this->attributes)) {
+            $value = $this->attributes[$key];
         }
         return $value;
     }

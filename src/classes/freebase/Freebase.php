@@ -12,25 +12,30 @@ namespace freebase;
  */
 class Freebase
 {
-
+    /**
+     * @var string
+     */
     private $baseFetchUrl;
 
-    private $baseSearchUrl;
+    /**
+     * @var string
+     */
+    private $baseApiUrl;
     
     /**
      * @param string $baseUrl 
      */
-    public function __construct($baseFetchUrl, $baseSearchUrl)
+    public function __construct($baseFetchUrl = "http://www.freebase.com/experimental/topic/standard/", $baseApiUrl = "http://api.freebase.com/api/service/")
     {
         if (\substr($baseFetchUrl, -1) !== '/') {
             $baseFetchUrl .= '/';
         }
         $this->baseFetchUrl = $baseFetchUrl;
 
-        if (\substr($baseSearchUrl, -1) !== '/') {
-            $baseSearchUrl .= '/';
+        if (\substr($baseApiUrl, -1) !== '/') {
+            $baseApiUrl .= '/';
         }
-        $this->baseSearchUrl = $baseSearchUrl;
+        $this->baseApiUrl = $baseApiUrl;
     }
 
     /**
@@ -43,13 +48,19 @@ class Freebase
             $id = \substr($id, 1); //strip first / if needed as already insured in constructor
         }
         $url = $this->baseFetchUrl . $id;
-        $json = \file_get_contents($url);
+        $json = $this->doRequest($url);
         return DomFactory::createDomFromJson($json);
     }
 
+    /**
+     * @param Query $query
+     * @return \freebase\Node
+     */
     public function fetchByQuery(Query $query)
     {
-
+        $url = $this->baseApiUrl . 'mqlread';
+        $json = $this->doRequest($url, $query->__toJson());
+        return DomFactory::createDomFromJson($json);
     }
 
     /**
@@ -65,7 +76,7 @@ class Freebase
         \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true);
         if (null !== $jsonData) {
             \curl_setopt($ch, \CURLOPT_POST, true);
-            \curl_setopt($ch, \CURLOPT_POSTFIELDS, $jsonData);
+            \curl_setopt($ch, \CURLOPT_POSTFIELDS, array('query' => $jsonData));
         }
         $response = \curl_exec($ch);
         \curl_close($ch);

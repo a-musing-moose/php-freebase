@@ -35,10 +35,8 @@ class Query
     public function __toJson()
     {
         $query = array(
-            'q1'=>array(
-                'query' => $this->criteria
-                )
-            );
+            'query' => $this->criteria
+        );
 
         return \json_encode($query);
     }
