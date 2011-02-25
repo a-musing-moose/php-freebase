@@ -20,20 +20,19 @@ This will run all tests, create documentation (in the /docs folder) and creates 
 
 ### Basic Usage
 
-Fetch a topic:
+_Fetch a topic:_
     $freebase = new freebase\Freebase();
     $result = $freebase->fetchByTopicId('/en/philip_k_dick');
 
-Perform a basic search:
+_Perform a basic search:{
     $freebase = new freebase\Freebase();
     $query = new freebase\Query();
     $query->addField('id', '/topic/en/philip_k_dick')
           ->addField('/book/author/works_written', array()); //placeholder for results
     $result = $freebase->fetchByQuery($query);
 
-Using the returned results:
-
-    The results returned from Freebase are formated into a DOM (Document Object Model) which exposes a number of methods to allow you to traverse it and extract the data you need
+_Using the returned results:_
+The results returned from Freebase are formated into a DOM (Document Object Model) which exposes a number of methods to allow you to traverse it and extract the data you need
 
     $result->getChildByName("properties"); //returns the 'properties' Child Node
     $result->getChildByPath("properties./book/author/works_written"); fetches the /book/author/works_written node within the properties node
