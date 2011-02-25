@@ -27,7 +27,7 @@ class TestDomFactory extends \PHPUnit_Framework_TestCase
         $factory = new DomFactory();
         $json = \file_get_contents(\dirname(__FILE__) . '/../../fixtures/topic.json');
         $root = $factory->jsonToDom($json);
-        $this->assertInstanceOf('freebase\\Node', $root);
+        $this->assertTrue($root instanceof \freebase\Node);
     }
 
     public function testValidJsonIsParsedIntoCorrectDom()
