@@ -17,24 +17,52 @@ class DomFactory
      * @param string $json
      * @return \freebase\Node
      */
-    public static function createDomFromJson($json)
+    public static function createDomFromJson($json, $id = null)
     {
         $node = null;
         $data = \json_decode($json, true);
         if (null === $data) {
-            throw new \freebase\exception\InvalidJson();
+            throw new \freebase\exception\InvalidJson($json);
         }
-        if (isset($data['code']) && $data['code'] == Constants::API_RESPONSE_CODE_OK ) {
-            $node = self::createNode($data['result'], 'root');
-        } else {
-            if (\is_array($data['messages'][0])) {
-                $message = $data['messages'][0]['message'];
+        if (self::getResponseCode($data, $id) == Constants::API_RESPONSE_CODE_OK ) {
+            if (null === $id) {
+                $node = self::createNode(self::getResultNode($data), 'root');
             } else {
-                $message = \implode(". ", $data['messages']);
+                $node = self::createNode(self::getResultNode($data, $id), $id);
             }
-            throw new \freebase\exception\ApiError($message);
+            
+        } else {
+            throw new \freebase\exception\ApiError("");
         }
         return $node;
+    }
+
+    /**
+     *
+     * @param array $data
+     * @param string $id
+     * @return string
+     */
+    protected static function getResponseCode(array $data, $id = null)
+    {
+        $code = null;
+        if (null == $id) {
+            $code = isset($data['code']) ? $data['code'] : null;
+        } else {
+            $code = isset($data[$id]['code']) ? $data[$id]['code'] : null;
+        }
+        return $code;
+    }
+
+    protected static function getResultNode(array $data, $id = null)
+    {
+        $result = null;
+        if (null == $id) {
+            $result = $data['result'];
+        } else {
+            $result = $data[$id]['result'];
+        }
+        return $result;
     }
 
     /**

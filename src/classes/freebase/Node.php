@@ -152,7 +152,7 @@ class Node implements \IteratorAggregate
      */
     public function getChildren()
     {
-        return $this->nodes;
+        return $this->children;
     }
 
     /**
@@ -162,8 +162,8 @@ class Node implements \IteratorAggregate
     public function getChildByName($name)
     {
         $node = null;
-        if (isset($this->nodes[$name])) {
-            $node = $this->nodes[$name];
+        if (isset($this->children[$name])) {
+            $node = $this->children[$name];
         }
         return $node;
     }

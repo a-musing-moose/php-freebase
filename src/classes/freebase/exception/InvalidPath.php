@@ -20,7 +20,7 @@ class InvalidPath extends \freebase\Exception
      */
     public function __construct($path)
     {
-        parent::__construct(\sprint_f(self::TEMPLATE, $path));
+        parent::__construct(\sprintf(self::TEMPLATE, $path));
     }
 
 }

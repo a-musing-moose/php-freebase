@@ -17,8 +17,8 @@ class InvalidJson extends \freebase\Exception
 
     const MESSAGE = "JSON response could not be parsed";
 
-    public function __construct()
+    public function __construct($json)
     {
-        parent::__construct(self::MESSAGE);
+        parent::__construct(self::MESSAGE . $json);
     }
 }

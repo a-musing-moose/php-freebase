@@ -13,7 +13,7 @@ namespace freebase;
 class Freebase
 {
 
-    const PATH_TOPIC = 'experimental/topic/standard/';
+    const PATH_TOPIC = 'experimental/topic/standard/?id=';
 
     const PATH_MQLREAD = 'service/mqlread';
 
@@ -37,14 +37,14 @@ class Freebase
      * @param string $id
      * @return \freebase\Node
      */
-    public function fetchByTopicId($id)
+    public function fetchByTopicId($id, array $domains = array())
     {
-        if (\substr($id, 0, 1) === '/') {
-            $id = \substr($id, 1); //strip first / if needed as already insured in constructor
-        }
         $url = $this->baseUrl . self::PATH_TOPIC .  $id;
+        if (!empty($domains)) {
+            $url .= '?' . \implode(',', $domains);
+        }
         $json = $this->doRequest($url);
-        return DomFactory::createDomFromJson($json);
+        return DomFactory::createDomFromJson($json, $id);
     }
 
     /**
