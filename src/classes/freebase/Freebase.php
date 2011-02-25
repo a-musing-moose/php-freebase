@@ -12,42 +12,37 @@ namespace freebase;
  */
 class Freebase
 {
-    /**
-     * @var string
-     */
-    private $baseFetchUrl;
+
+    const PATH_TOPIC = 'experimental/topic/standard/';
+
+    const PATH_MQLREAD = 'service/mqlread';
 
     /**
      * @var string
      */
-    private $baseApiUrl;
+    private $baseUrl;
     
     /**
      * @param string $baseUrl 
      */
-    public function __construct($baseFetchUrl = "http://www.freebase.com/experimental/topic/standard/", $baseApiUrl = "http://api.freebase.com/api/service/")
+    public function __construct($baseUrl = "http://api.freebase.com/api/")
     {
-        if (\substr($baseFetchUrl, -1) !== '/') {
-            $baseFetchUrl .= '/';
+        if (\substr($baseUrl, -1) !== '/') {
+            $baseUrl .= '/';
         }
-        $this->baseFetchUrl = $baseFetchUrl;
-
-        if (\substr($baseApiUrl, -1) !== '/') {
-            $baseApiUrl .= '/';
-        }
-        $this->baseApiUrl = $baseApiUrl;
+        $this->baseUrl = $baseUrl;
     }
 
     /**
      * @param string $id
      * @return \freebase\Node
      */
-    public function fetchById($id)
+    public function fetchByTopicId($id)
     {
         if (\substr($id, 0, 1) === '/') {
             $id = \substr($id, 1); //strip first / if needed as already insured in constructor
         }
-        $url = $this->baseFetchUrl . $id;
+        $url = $this->baseUrl . self::PATH_TOPIC .  $id;
         $json = $this->doRequest($url);
         return DomFactory::createDomFromJson($json);
     }
@@ -58,7 +53,7 @@ class Freebase
      */
     public function fetchByQuery(Query $query)
     {
-        $url = $this->baseApiUrl . 'mqlread';
+        $url = $this->baseUrl . self::PATH_MQLREAD;
         $json = $this->doRequest($url, $query->__toJson());
         return DomFactory::createDomFromJson($json);
     }

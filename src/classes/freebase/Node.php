@@ -176,7 +176,7 @@ class Node implements \IteratorAggregate
             if (null === $node) {
                 break;
             }
-            $node = $node->getNodeByName($name);
+            $node = $node->getChildByName($name);
         }
         if (null === $node) {
             throw new exception\InvalidPath($path);
