@@ -24,7 +24,7 @@ _Fetch a topic:_
     $freebase = new freebase\Freebase();
     $result = $freebase->fetchByTopicId('/en/philip_k_dick');
 
-_Perform a basic search:{
+_Perform a basic search:_
     $freebase = new freebase\Freebase();
     $query = new freebase\Query();
     $query->addField('id', '/topic/en/philip_k_dick')
