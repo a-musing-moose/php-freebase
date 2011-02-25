@@ -29,10 +29,12 @@
 		<phpdoc title="${package.title} Documentation" destdir="docs/api" sourcecode="yes"
 			output="HTML:frames:DOM/default" quiet="true" defaultpackagename="${package.default}">
 			<fileset refid="source" />
+            <!--
 			<fileset dir="src/tutorials">
 				<include name="**/*.pkg" />
 				<include name="**/*.cls" />
 			</fileset>
+            -->
 		</phpdoc>
 
 	</target>
@@ -54,13 +56,7 @@
     <target name="coverage-report" description="generates unit test coverage report">
         <delete dir="docs/coverage" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
 		<mkdir dir="docs/coverage" />
-        <exec command="phpunit --coverage-html docs/coverage/ tests/unit-tests/UnitTests.php" checkreturn="false" />
-    </target>
-
-    <target name="bdd-report" description="generates bdd testdox report">
-        <delete dir="docs/bdd_report" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
-		<mkdir dir="docs/bdd_report" />
-        <exec command="phpunit --testdox-html docs/bdd_report/index.html tests/bdd/BDDTests.php" checkreturn="false" />
+        <exec command="phpunit --coverage-html docs/coverage/ tests/unit/UnitTests.php" checkreturn="false" />
     </target>
 
 	<target name="integration-report" description="Integration test report">
@@ -95,6 +91,16 @@
         <mkdir dir="export/tests/unit" />
         <copy todir="export/tests/unit">
             <fileset dir="tests/unit">
+                <include name="**/*.php" />
+            </fileset>
+            <filterchain>
+            	<stripwhitespace />
+            </filterchain>
+        </copy>
+
+        <mkdir dir="export/tests/fixtures" />
+        <copy todir="export/tests/fixtures">
+            <fileset dir="tests/fixtures">
                 <include name="**/*" />
             </fileset>
             <filterchain>
@@ -126,6 +132,6 @@
         <doxygen config="doxygen.conf"/>
     </target>
 
-    <target name="build-all" depends="lint-source, unit-report, bdd-report, coverage-report, api-docs, package, integration-report"></target>
+    <target name="build-all" depends="lint-source, unit-report, coverage-report, api-docs, package, integration-report"></target>
 
 </project>

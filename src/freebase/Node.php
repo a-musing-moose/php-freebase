@@ -168,6 +168,10 @@ class Node implements \IteratorAggregate
         return $node;
     }
 
+    /**
+     * @param string $path Names should be separated by '.' characters
+     * @return \freebase\Node
+     */
     public function getChildByPath($path)
     {
         $nodeList = \explode(".", $path);
@@ -188,6 +192,9 @@ class Node implements \IteratorAggregate
     // IteratorAggregate INTERFACE //
     /////////////////////////////////
 
+    /**
+     * @return \ArrayIterator
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->children);

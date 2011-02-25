@@ -7,16 +7,16 @@
  */
 namespace freebase;
 
-require \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
-require \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidPath.php';
-require \dirname(__FILE__) . '/../../../src/freebase/Node.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidPath.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/Node.php';
 
 /**
  * Description of TestQuery
  *
  * @package
  */
-class TestQuery extends \PHPUnit_Framework_TestCase
+class TestNode extends \PHPUnit_Framework_TestCase
 {
 
     public function testNewNodeHasNoChildren()
@@ -93,6 +93,9 @@ class TestQuery extends \PHPUnit_Framework_TestCase
         $node->addChild($c1);
 
         $this->assertSame($c2, $node->getChildByPath("one.two"));
+        
+        $this->setExpectedException('\\freebase\\exception\\InvalidPath');
+        $node->getChildByPath("one.zombies.eat.brains");
     }
 
     public function testThatICanGetANodesParent()

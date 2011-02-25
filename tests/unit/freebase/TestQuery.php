@@ -7,9 +7,9 @@
  */
 namespace freebase;
 
-require \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
-require \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidQuery.php';
-require \dirname(__FILE__) . '/../../../src/freebase/Query.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidQuery.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/Query.php';
 
 /**
  * Description of TestQuery

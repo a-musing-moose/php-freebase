@@ -13,28 +13,35 @@ namespace freebase;
 class DomFactory
 {
 
-    /**
+     /**
      * @param string $json
      * @return \freebase\Node
      */
     public static function createDomFromJson($json, $id = null)
     {
-        $node = null;
+        $factory = new self;
+        return $factory->jsonToDom($json, $id);
+    }
+
+    /**
+     * @param string $json
+     * @param string $id
+     * @return Node
+     */
+    public function jsonToDom($json, $id = null)
+    {
+        $root = null;
         $data = \json_decode($json, true);
         if (null === $data) {
             throw new \freebase\exception\InvalidJson($json);
         }
-        if (self::getResponseCode($data, $id) == Constants::API_RESPONSE_CODE_OK ) {
-            if (null === $id) {
-                $node = self::createNode(self::getResultNode($data), 'root');
-            } else {
-                $node = self::createNode(self::getResultNode($data, $id), $id);
-            }
-            
+        if ($this->getResponseCode($data, $id) == Constants::API_RESPONSE_CODE_OK ) {
+            $root = $this->createNode($this->getResultNode($data, $id), $id);
         } else {
+            //@todo error parsing requires a little more work methinks
             throw new \freebase\exception\ApiError("");
         }
-        return $node;
+        return $root;
     }
 
     /**
@@ -43,7 +50,7 @@ class DomFactory
      * @param string $id
      * @return string
      */
-    protected static function getResponseCode(array $data, $id = null)
+    protected function getResponseCode(array $data, $id = null)
     {
         $code = null;
         if (null == $id) {
@@ -54,7 +61,12 @@ class DomFactory
         return $code;
     }
 
-    protected static function getResultNode(array $data, $id = null)
+    /**
+     * @param array $data
+     * @param string $id
+     * @return array
+     */
+    protected function getResultNode(array $data, $id = null)
     {
         $result = null;
         if (null == $id) {
@@ -70,14 +82,14 @@ class DomFactory
      * @param string $name
      * @return \freebase\Node
      */
-    protected static function createNode(array $data, $name = null)
+    protected function createNode(array $data, $name = null)
     {
         $node = new Node($name);
         foreach ($data as $key => $value) {
             if (\is_scalar($value)) {
                 $node->setAttributeValue($key, $value);
             } else {
-                $node->addChild(self::createNode($value, $key));
+                $node->addChild($this->createNode($value, $key));
             }
         }
         return $node;
