@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="php-freebase" default="build-all">
+
+	<property file="package.properties" />
+
+	<fileset dir="tests/unit" id="unit-tests">
+		<include name="**/Test*.php" />
+		<exclude name="UnitTests.php" />
+	</fileset>
+
+	<fileset dir="tests/integration" id="integration-tests">
+	       <include name="**/Test*.php" />
+		   <exclude name="IntegrationsTests.php" />
+	</fileset>
+
+	<fileset dir="src/freebase" id="source">
+	   <include name="**/*.php" />
+	</fileset>
+
+	<target name="lint-source" description="checks source for syntax errors">
+		<phplint haltonfailure="true">
+			<fileset refid="source"/>
+		</phplint>
+	</target>
+
+	<target name="api-docs" description="Creates documentation">
+		<delete dir="docs/api" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
+		<mkdir dir="docs/api" />
+		<phpdoc title="${package.title} Documentation" destdir="docs/api" sourcecode="yes"
+			output="HTML:frames:DOM/default" quiet="true" defaultpackagename="${package.default}">
+			<fileset refid="source" />
+			<fileset dir="src/tutorials">
+				<include name="**/*.pkg" />
+				<include name="**/*.cls" />
+			</fileset>
+		</phpdoc>
+
+	</target>
+
+	<target name="unit-report" description="Unit test report">
+        <phpunit haltonfailure="true" haltonerror="true" printsummary="true">
+            <formatter type="xml" outfile="test-report.xml" />
+            <batchtest>
+                <fileset refid="unit-tests" />
+            </batchtest>
+        </phpunit>
+
+        <delete dir="docs/test_report" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
+        <mkdir dir="docs/test_report" />
+        <phpunitreport infile="test-report.xml" format="frames" todir="docs/test_report" />
+        <delete file="test-report.xml" />
+    </target>
+
+    <target name="coverage-report" description="generates unit test coverage report">
+        <delete dir="docs/coverage" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
+		<mkdir dir="docs/coverage" />
+        <exec command="phpunit --coverage-html docs/coverage/ tests/unit-tests/UnitTests.php" checkreturn="false" />
+    </target>
+
+    <target name="bdd-report" description="generates bdd testdox report">
+        <delete dir="docs/bdd_report" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
+		<mkdir dir="docs/bdd_report" />
+        <exec command="phpunit --testdox-html docs/bdd_report/index.html tests/bdd/BDDTests.php" checkreturn="false" />
+    </target>
+
+	<target name="integration-report" description="Integration test report">
+	        <phpunit haltonfailure="true" haltonerror="true" printsummary="false">
+	        	<formatter type="xml" outfile="integration-tests.xml" />
+	        	<formatter type="plain" usefile="false" />
+	            <batchtest>
+	                <fileset refid="integration-tests" />
+	            </batchtest>
+	        </phpunit>
+	        <delete dir="docs/integration_report" quiet="true" includeemptydirs="true" verbose="false" failonerror="false" />
+	        <mkdir dir="docs/integration_report" />
+	        <phpunitreport infile="integration-tests.xml" format="frames" todir="docs/integration_report" />
+	        <delete file="integration-tests.xml"/>
+	    </target>
+
+    <target name="package" description="build the phar library">
+        <tstamp>
+            <format property="date.created" pattern="%Y-%m-%d %H:%I:%S" />
+            <format property="date.year" pattern="%Y" />
+            <format property="date.build" pattern="%s" />
+        </tstamp>
+
+        <mkdir dir="export/src/freebase" />
+        <copy todir="export/src/freebase">
+            <fileset refid="source" />
+            <filterchain>
+            	<stripwhitespace />
+            </filterchain>
+        </copy>
+
+        <mkdir dir="export/tests/unit" />
+        <copy todir="export/tests/unit">
+            <fileset dir="tests/unit">
+                <include name="**/*" />
+            </fileset>
+            <filterchain>
+            	<stripwhitespace />
+            </filterchain>
+        </copy>
+
+    	<delete file="${package.file}" quiet="true" />
+
+        <pharpackage basedir="export" destfile="${package.file}" compression="gzip" stub="src/bootstrap.php" alias="${package.title}">
+            <fileset dir="export">
+            	<include name="**/*" />
+            </fileset>
+            <metadata>
+            	<element name="Title" value="${package.title}" />
+            	<element name="Author" value="${package.author}" />
+            	<element name="Description" value="${package.description}" />
+                <element name="Copyright" value="${package.copyright} ${date.year}" />
+                <element name="Build" value="${date.build}" />
+            	<element name="Created Date" value="${date.created}" />
+            </metadata>
+        </pharpackage>
+
+    	<delete dir="export" quiet="true" includeemptydirs="true" />
+    </target>
+
+    <taskdef classname="PhingDoxygen.Task.DoxygenTask" name="doxygen"/>
+    <target name="doxygen" description="Creates documentation">
+        <doxygen config="doxygen.conf"/>
+    </target>
+
+    <target name="build-all" depends="lint-source, unit-report, bdd-report, coverage-report, api-docs, package, integration-report"></target>
+
+</project>
