@@ -7,7 +7,7 @@
 Phar::mapPhar();
 
 if (php_sapi_name() == 'cli' && isset ($argv[1])) {
-    $runner = new CliRunner();
+    $runner = new FreebaseCliRunner();
     $runner->processParameters($argv);
 } else {
     //register the autoloader
@@ -62,7 +62,7 @@ class FreebaseAutoLoader
 /**
  * Cli runner
  */
-class CliRunner
+class FreebaseCliRunner
 {
 
     /**
