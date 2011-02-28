@@ -37,7 +37,7 @@ class FreebaseAutoLoader
         'freebase\\Exception'                 => 'phar://Freebase/src/freebase/Exception.php',
         'freebase\\Freebase'                  => 'phar://Freebase/src/freebase/Freebase.php',
         'freebase\\Node'                      => 'phar://Freebase/src/freebase/Node.php',
-        'freebase\\Node'                      => 'phar://Freebase/src/freebase/EmptyNode.php',
+        'freebase\\EmptyNode'                      => 'phar://Freebase/src/freebase/EmptyNode.php',
         'freebase\\Query'                     => 'phar://Freebase/src/freebase/Query.php',
     );
 
