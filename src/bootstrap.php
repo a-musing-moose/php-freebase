@@ -114,12 +114,17 @@ class FreebaseCliRunner
     private function runTests(PHPUnit_Framework_TestListener $listener)
     {
         echo "RUNNING TEST SUITE:\n^^^^^^^^^^^^^^^^^^^\n";
+        ini_set('display_errors', true);
         set_include_path(get_include_path() . PATH_SEPARATOR . 'Freebase.phar');
         require_once 'phar://Freebase/tests/unit/UnitTests.php';
         $suite = UnitTests::suite();
         $result = new PHPUnit_Framework_TestResult;
         $result->addListener($listener);
-        $suite->run($result);
+        try {
+            $suite->run($result);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
         echo "\n";
         die((int)$result->wasSuccessful());
     }

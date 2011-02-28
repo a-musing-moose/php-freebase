@@ -156,6 +156,10 @@ class Node implements \IteratorAggregate
     }
 
     /**
+     * Returns the named child
+     *
+     * If the named child does not exists and instance of EmptyNode is returned
+     *
      * @param string $name
      * @return \freebase\Node
      */
@@ -169,6 +173,10 @@ class Node implements \IteratorAggregate
     }
 
     /**
+     * Returns a child node based on the passed in path
+     *
+     * If the path cannot be found in the DOM then an empty node is returned
+     *
      * @param string $path Names should be separated by '.' characters
      * @return \freebase\Node
      */
