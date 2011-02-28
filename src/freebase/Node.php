@@ -161,7 +161,7 @@ class Node implements \IteratorAggregate
      */
     public function getChildByName($name)
     {
-        $node = null;
+        $node = new EmptyNode();
         if (isset($this->children[$name])) {
             $node = $this->children[$name];
         }
@@ -183,7 +183,7 @@ class Node implements \IteratorAggregate
             $node = $node->getChildByName($name);
         }
         if (null === $node) {
-            throw new exception\InvalidPath($path);
+            $node = new EmptyNode();
         }
         return $node;
     }

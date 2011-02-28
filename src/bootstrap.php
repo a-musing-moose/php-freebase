@@ -6,7 +6,7 @@
 
 Phar::mapPhar();
 
-if (php_sapi_name() == 'cli' && isset ($argv[1])) {
+if (php_sapi_name() == 'cli' && isset ($argv[1])  && strtolower(substr($argv[0], -4)) == 'phar') {
     $runner = new FreebaseCliRunner();
     $runner->processParameters($argv);
 } else {
@@ -29,7 +29,6 @@ class FreebaseAutoLoader
                 //exceptions
         'freebase\\exception\\ApiError'       => 'phar://Freebase/src/freebase/exception/ApiError.php',
         'freebase\\exception\\InvalidJson'    => 'phar://Freebase/src/freebase/exception/InvalidJson.php',
-        'freebase\\exception\\InvalidPath'    => 'phar://Freebase/src/freebase/exception/InvalidPath.php',
         'freebase\\exception\\InvalidQuery'   => 'phar://Freebase/src/freebase/exception/InvalidQuery.php',
 
         //real stuff
@@ -38,6 +37,7 @@ class FreebaseAutoLoader
         'freebase\\Exception'                 => 'phar://Freebase/src/freebase/Exception.php',
         'freebase\\Freebase'                  => 'phar://Freebase/src/freebase/Freebase.php',
         'freebase\\Node'                      => 'phar://Freebase/src/freebase/Node.php',
+        'freebase\\Node'                      => 'phar://Freebase/src/freebase/EmptyNode.php',
         'freebase\\Query'                     => 'phar://Freebase/src/freebase/Query.php',
     );
 

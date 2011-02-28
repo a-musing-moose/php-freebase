@@ -9,7 +9,6 @@ namespace freebase;
 
 require_once \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
 require_once \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidJson.php';
-require_once \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidPath.php';
 require_once \dirname(__FILE__) . '/../../../src/freebase/Constants.php';
 require_once \dirname(__FILE__) . '/../../../src/freebase/Node.php';
 require_once \dirname(__FILE__) . '/../../../src/freebase/DomFactory.php';

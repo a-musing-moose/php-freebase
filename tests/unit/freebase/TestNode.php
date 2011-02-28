@@ -8,8 +8,8 @@
 namespace freebase;
 
 require_once \dirname(__FILE__) . '/../../../src/freebase/Exception.php';
-require_once \dirname(__FILE__) . '/../../../src/freebase/exception/InvalidPath.php';
 require_once \dirname(__FILE__) . '/../../../src/freebase/Node.php';
+require_once \dirname(__FILE__) . '/../../../src/freebase/EmptyNode.php';
 
 /**
  * Description of TestQuery
@@ -94,8 +94,7 @@ class TestNode extends \PHPUnit_Framework_TestCase
 
         $this->assertSame($c2, $node->getChildByPath("one.two"));
         
-        $this->setExpectedException('\\freebase\\exception\\InvalidPath');
-        $node->getChildByPath("one.zombies.eat.brains");
+        $this->assertTrue($node->getChildByPath("one.zombies.eat.brains") instanceof \freebase\EmptyNode);
     }
 
     public function testThatICanGetANodesParent()
