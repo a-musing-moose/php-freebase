@@ -127,11 +127,6 @@
     	<delete dir="export" quiet="true" includeemptydirs="true" />
     </target>
 
-    <taskdef classname="PhingDoxygen.Task.DoxygenTask" name="doxygen"/>
-    <target name="doxygen" description="Creates documentation">
-        <doxygen config="doxygen.conf"/>
-    </target>
-
-    <target name="build-all" depends="lint-source, unit-report, coverage-report, api-docs, package, integration-report"></target>
+    <target name="build-all" depends="lint-source, unit-report, coverage-report, api-docs, package"></target>
 
 </project>
