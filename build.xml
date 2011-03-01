@@ -109,17 +109,17 @@
         </copy>
 
     	<delete file="${package.file}" quiet="true" />
-
+        <property name="BUILD_NUMBER" value="local(${date.build})" override="false"/>
         <pharpackage basedir="export" destfile="${package.file}" compression="gzip" stub="src/bootstrap.php" alias="${package.title}">
             <fileset dir="export">
             	<include name="**/*" />
-            </fileset>
+            </fileset>    
             <metadata>
             	<element name="Title" value="${package.title}" />
             	<element name="Author" value="${package.author}" />
             	<element name="Description" value="${package.description}" />
                 <element name="Copyright" value="${package.copyright} ${date.year}" />
-                <element name="Build" value="${date.build}" />
+                <element name="Build" value="${BUILD_NUMBER}" />
             	<element name="Created Date" value="${date.created}" />
             </metadata>
         </pharpackage>

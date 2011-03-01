@@ -75,7 +75,7 @@ class FreebaseCliRunner
         $switches = array();
         $commands = array();
         foreach (array_slice($argv, 1) as $arg) {
-            if (substr($arg, 0, 2) == '--') {
+            if (substr($arg, 0, 2) == '--' || substr($arg, 0, 1) == '-') {
                 $switches[] = $arg;
             } else {
                 $commands[] = $arg;
@@ -97,7 +97,13 @@ class FreebaseCliRunner
             $this->printHeader($filename);
             $this->listContent($filename);
             break;
+        case in_array('version', $commands):
+        case in_array('--version', $switches):
+        case in_array('-v', $switches):
+            $this->listVersion($filename);
+            break;
         case in_array('--help', $switches):
+        case in_array('-h', $switches):
         case in_array('help', $commands):
         default:
             $this->printHeader($filename);
@@ -147,6 +153,13 @@ class FreebaseCliRunner
         }
     }
 
+    private function listVersion($filename)
+    {
+        $p = new Phar($filename, 0);
+        $meta = $p->getMetadata();
+        echo "Build: " . $meta['Build'] . "\n";
+    }
+
     /**
      * @param string $filename
      * @return void
@@ -177,9 +190,11 @@ Actions:
   test              Runs the unit test suite
   help              Show this usage information
   list              Lists the metadata and file content of this library
+  version           Lists the build number of this library
 
 Switches:
   --testdox         Will output a test results in the testdox format
+  --version         Lists the build number of this library
 
 
 EOD;
