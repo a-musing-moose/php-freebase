@@ -1,0 +1,15 @@
+{
+  "code":          "/api/status/error",
+  "messages": [{
+    "code":    "/api/status/error/mql/parse",
+    "info": {
+    },
+    "message": "Can't use a default clause at the root of the query",
+    "path":    "",
+    "query": [{
+      "error_inside": "."
+    }]
+  }],
+  "status":        "200 OK",
+  "transaction_id": "cache;cache03.p01.sjc1:8101;2011-03-01T00:35:01Z;0051"
+}

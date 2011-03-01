@@ -93,7 +93,6 @@ class TestNode extends \PHPUnit_Framework_TestCase
         $node->addChild($c1);
 
         $this->assertSame($c2, $node->getChildByPath("one.two"));
-        
         $this->assertTrue($node->getChildByPath("one.zombies.eat.brains") instanceof \freebase\EmptyNode);
     }
 

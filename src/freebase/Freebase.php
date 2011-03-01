@@ -66,13 +66,17 @@ class Freebase
     protected function doRequest($url, $jsonData = null)
     {
         $ch = \curl_init();
-        \curl_setopt($ch, \CURLOPT_URL, $url);
-        \curl_setopt($ch, \CURLOPT_HEADER, false);
-        \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true);
+        $options = array(
+            \CURLOPT_URL => $url,
+            \CURLOPT_HEADER => false,
+            \CURLOPT_RETURNTRANSFER => true
+        );
         if (null !== $jsonData) {
-            \curl_setopt($ch, \CURLOPT_POST, true);
-            \curl_setopt($ch, \CURLOPT_POSTFIELDS, array('query' => $jsonData));
+            $options[\CURLOPT_POST] = true;
+            $options[\CURLOPT_POSTFIELDS] = array('query' => $jsonData);
         }
+
+        \curl_setopt_array($ch, $options);
         $response = \curl_exec($ch);
         \curl_close($ch);
         return $response;

@@ -25,6 +25,13 @@ class TestQuery extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($query->getCriteria());
     }
 
+    public function testThatAttemptingToGenerateJsonOnEmptyQueryThrowsAnException()
+    {
+        $query = new Query();
+        $this->setExpectedException('\\freebase\\exception\InvalidQuery');
+        $query->__toJson();
+    }
+
     public function testThatNewFieldsAreAddCorrectly()
     {
         $query = new Query();

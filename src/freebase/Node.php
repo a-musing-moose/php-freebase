@@ -185,13 +185,10 @@ class Node implements \IteratorAggregate
         $nodeList = \explode(".", $path);
         $node = $this;
         foreach ($nodeList as $name) {
-            if (null === $node) {
+            if ($node instanceof \freebase\EmptyNode) {
                 break;
             }
             $node = $node->getChildByName($name);
-        }
-        if (null === $node) {
-            $node = new EmptyNode();
         }
         return $node;
     }

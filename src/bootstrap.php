@@ -15,7 +15,7 @@ if (php_sapi_name() == 'cli' && isset ($argv[1])  && strtolower(substr($argv[0],
 }
 
 /**
- * Autoloader for the wotsit package
+ * Autoloader for the Freebase package
  */
 class FreebaseAutoLoader
 {
@@ -85,12 +85,11 @@ class FreebaseCliRunner
         switch (true) {
         case in_array('test', $commands):
             require_once 'PHPUnit/Autoload.php';
-            $verbose = in_array('--verbose', $switches);
             $this->printHeader($filename);
             if (in_array('--testdox', $switches)) {
                 $listener = new PHPUnit_Util_TestDox_ResultPrinter_Text();
             } else {
-                $listener = new PHPUnit_TextUI_ResultPrinter(null, $verbose);
+                $listener = new PHPUnit_TextUI_ResultPrinter(null, false);
             }
             $this->runTests($listener);
             break;
@@ -113,8 +112,7 @@ class FreebaseCliRunner
      */
     private function runTests(PHPUnit_Framework_TestListener $listener)
     {
-        echo "RUNNING TEST SUITE:\n^^^^^^^^^^^^^^^^^^^\n";
-        ini_set('display_errors', true);
+        echo "RUNNING TEST SUITE:\n\n";
         set_include_path(get_include_path() . PATH_SEPARATOR . 'Freebase.phar');
         require_once 'phar://Freebase/tests/unit/UnitTests.php';
         $suite = UnitTests::suite();
@@ -125,7 +123,7 @@ class FreebaseCliRunner
         } catch (Exception $e) {
             die($e->getMessage());
         }
-        echo "\n";
+        echo $result->wasSuccessful() ? "[OK]\n" : "[FAIL]\n";
         die((int)$result->wasSuccessful());
     }
 
@@ -136,12 +134,12 @@ class FreebaseCliRunner
     private function listContent($filename)
     {
         $p = new Phar($filename, 0);
-        echo "LISTING METADATA\n^^^^^^^^^^^^^^^^\n";
+        echo "METADATA:\n";
         foreach ($p->getMetadata() as $key => $value) {
             echo "\t{$key}: {$value}\n";
         }
 
-        echo "\nLISTING CONTENTS\n^^^^^^^^^^^^^^^^\n";
+        echo "\nCONTENTS:\n";
         foreach (new RecursiveIteratorIterator($p) as $file) {
             $path = $file->getPathname();
             $path = substr($path, strpos($path, $filename) + strlen($filename));
@@ -171,9 +169,9 @@ EOD;
     private function printHelp()
     {
         echo <<<EOD
-Usage: php Wotsit.phar [switches] test
-       php Wotsit.phar [switches] help
-       php Wotsit.phar [switches] list
+Usage: php Freebase.phar [switches] test
+       php Freebase.phar [switches] help
+       php Freebase.phar [switches] list
 
 Actions:
   test              Runs the unit test suite
@@ -181,7 +179,6 @@ Actions:
   list              Lists the metadata and file content of this library
 
 Switches:
-  --verbose         Will output a more verbose test report
   --testdox         Will output a test results in the testdox format
 
 

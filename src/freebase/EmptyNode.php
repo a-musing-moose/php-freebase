@@ -39,7 +39,7 @@ class EmptyNode extends Node
      */
     public function getChildren()
     {
-        return array($this);
+        return array();
     }
 
     /**
